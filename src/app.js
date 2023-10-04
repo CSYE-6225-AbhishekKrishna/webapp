@@ -26,15 +26,16 @@ app.use('/authenticate', authenticateRouter);
 app.use(bodyParser.json());
 // Mount the assignmentRouter
 app.use('/v1/assignments', assignmentRoute);
-synchronizeDatabase().then(() => {
-    console.log('-----RUN synchronizeDatabase()-------');
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
-    });
-})
-.catch((error) =>{
-    console.error('Error synchronizing database:', error);
-});
+// synchronizeDatabase().then(() => {
+//     console.log('-----RUN synchronizeDatabase()-------');
+//     app.listen(port, () => {
+//         console.log(`Example app listening on port ${port}`);
+//     });
+// })
+// .catch((error) =>{
+//     console.error('Error synchronizing database:', error);
+// });
 
-module.export = app;
+module.exports = app;
+
 
