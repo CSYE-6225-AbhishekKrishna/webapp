@@ -44,7 +44,9 @@ router.get('/', async (req, res) => {
     const assignmentId = req.params.id; // Get the assignment ID from the URL parameter
     // const user_Id = req.user.id; // Get the user ID from the authenticated user
 
-    if (!assignmentId || !isValidUUID(assignmentId)) {
+    if (!assignmentId 
+      // || !isValidUUID(assignmentId)
+      ) {
       // Respond with a 400 Bad Request and an error message
       console.log('ERROR: Invalid or missing Assignment ID in the request.');
       return res.status(400).send();
@@ -129,21 +131,19 @@ router.get('/', async (req, res) => {
         const assignment = await Assignment.findOne({
             where: {
                 id: assignmentId,
-                user_id: user_Id // Add the user_id filter
+                // user_id: user_Id // Add the user_id filter
             }
         });
-        // console.log("--------------------assignment.user_id ---> "+assignment.user_id )
-        // console.log("--------------------user_Id ---> "+user_Id )
 
-        // if (assignment.user_id !== user_Id) {
-        //   return res.status(403).json({ error: 'Permission denied' });
-        // }
 
         if (!assignment) {
             return res.status(404).json({ error: 'Assignment not found' });
         }
 
-        
+        if(assignment.user_id != user_Id)
+        {
+          return res.status(403).send();
+        }
 
         // Update the assignment properties based on the request body
         assignment.name = req.body.name;
@@ -182,12 +182,17 @@ router.get('/', async (req, res) => {
         const assignment = await Assignment.findOne({
             where: {
                 id: assignmentId,
-                user_id: user_Id // Add the user_id filter
+                // user_id: user_Id // Add the user_id filter
             }
         });
 
         if (!assignment) {
             return res.status(404).json({ error: 'Assignment not found' });
+        }
+
+        if(assignment.user_id != user_Id)
+        {
+          return res.status(403).send();
         }
 
         // Delete the assignment

@@ -2,9 +2,23 @@
 function validateRequestMethod(req, res, next) {
     const supportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     res.setHeader('Cache-Control', 'no-cache');
-    if (!supportedMethods.includes(req.method)) {
-        return res.status(405).send();
+    if (req.path == '/v1/assignments/')
+    {
+        if (!supportedMethods.includes(req.method) ) {
+            return res.status(405).send();
+        }
+
     }
+    if (req.path == '/healthz')
+    {
+        if(req.method != 'GET')
+        {
+            return res.status(405).send();
+        }
+    }
+
+    
+    
     next();
 }
 

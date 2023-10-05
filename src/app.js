@@ -14,10 +14,10 @@ const assignmentRoute = require('./routes/assignmentRoute');
 require("dotenv").config();
 
 const port = process.env.PORT || 3000;
-
+console.log("in app 17");
 // Use the middlewares
 app.use(validateRequestMethod, checkRequestParameters, validatePayload);
-
+console.log("in app 20");
 // Mount the healthz router
 app.use('/healthz', healthzRouter);
 // Mount the authenticate router

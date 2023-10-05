@@ -11,7 +11,7 @@ async function authentication(req, res, next) {
         let err = new Error('You are not authenticated!');
         res.setHeader('WWW-Authenticate', 'Basic');
         err.status = 401;
-        return next(err)
+        return res.status(401).send();
     }
  
     const auth = new Buffer.from(authheader.split(' ')[1],
