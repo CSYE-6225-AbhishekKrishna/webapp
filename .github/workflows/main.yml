@@ -99,11 +99,13 @@ jobs:
 
     - name: Run Tests
       env:
-        DIALECT: postgres
-        HOST: localhost
-        DATABASE: newdb
-        USER: postgres
-        PASSWORD: Pa55w0rd
-        PGPORT: 5432
+
+        # postgres connection environment variables
+        DB_DIALECT: postgres
+        DB_HOST: 127.0.0.1
+        DB_DATABASE: postgres
+        DB_USER: postgres
+        DB_PASSWORD: Pa55w0rd
+        DB_PGPORT: 5432
 
       run: npm test
