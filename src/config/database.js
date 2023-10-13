@@ -6,12 +6,12 @@ const bcrypt = require('bcrypt');
 require("dotenv").config();
 
 const sequelize = new Sequelize({
-    dialect: process.env.DIALECT,
-    host: process.env.HOST,
-    database: process.env.DATABASE,
-    username: process.env.USER,
-    password: process.env.PASSWORD,
-    port: process.env.PGPORT,
+    dialect: process.env.DB_DIALECT,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PGPORT,
     logging: (query) => {
         console.log(query); // Log the query to the console
       }
@@ -37,33 +37,36 @@ const Assignment = require('../models/assignmentModel')(sequelize);
   
 async function synchronizeDatabase() {
   try{
+    // console.log("in synchronizeDatabase()");
+    // const databaseExists = await checkDatabaseExists();
+
+    // if (!databaseExists) {
+    //   console.log("in synchronizeDatabase() - !databaseExists");
+    //   // Create the database if it doesn't exist
+    //   await createDatabase();
+    // }
     await sequelize.sync();
 
     console.log('Database synchronized');
-    const csvFilePath = 'users.csv' ||'/opt/users.csv'; 
+    const csvFilePath = 'users.csv' || '/opt/users.csv'; 
     fs.createReadStream(csvFilePath).pipe(csv()).on('data', async (row) => {
         try {
 
           // Check if a user with the same email already exists
               const existingUser = await Account.findOne({ where: { email: row.email } });
-              // console.log("existingUser -->"+existingUser);
+
               if (!existingUser) {
-                  /* console.log("first_name -->"+row.first_name);
-                  console.log("last_name -->"+row.last_name);
-                  console.log("email -->"+row.email);
-                  console.log("password -->"+row.password);*/
-              // Hash the password using bcrypt before saving it
-              const hashedPassword = await bcrypt.hash(row.password, 10);
-              // Create a new user if one doesn't exist
-              //   console.log("---------------existingUser--------------");
-              await Account.create({
-                  first_name: row.first_name,
-                  last_name: row.last_name,
-                  email: row.email,
-                  password: hashedPassword,
-                  account_created: createdTimeDate,
-                  account_updated: updatedTimeDate
-              });
+                // Hash the password using bcrypt before saving it
+                const hashedPassword = await bcrypt.hash(row.password, 10);
+                // Create a new user if one doesn't exist
+                await Account.create({
+                    first_name: row.first_name,
+                    last_name: row.last_name,
+                    email: row.email,
+                    password: hashedPassword,
+                    account_created: createdTimeDate,
+                    account_updated: updatedTimeDate
+                });
               }
           else{
               console.log("User already exists")
@@ -80,6 +83,37 @@ async function synchronizeDatabase() {
   }
 
 }
+
+/*async function checkDatabaseExists() {
+
+  console.log("in checkDatabaseExists()");
+  const databaseName = process.env.DB_DATABASE;
+
+  try {
+    const query = `SELECT datname FROM pg_database WHERE datname = '${databaseName}'`;
+    const result = await sequelize.query(query, { raw: true });
+    return result[0].length > 0;
+  } catch (error) {
+    console.error('Error checking if the database exists:', error);
+    console.log("in checkDatabaseExists() return false in catch block");
+    return false;
+  }
+}
+
+async function createDatabase() {
+  console.log("in createDatabase()");
+  const databaseName = process.env.DB_DATABASE;
+
+  try {
+    console.log("in createDatabase() TRY:");
+    const query = `CREATE DATABASE ${databaseName}`;
+    await sequelize.query(query);
+    console.log(`Database '${databaseName}' created.`);
+  } catch (error) {
+    console.log("in createDatabase() CATCH:");
+    console.error('Error creating the database:', error);
+  }
+}*/
 
 module.exports = {
     Assignment,
