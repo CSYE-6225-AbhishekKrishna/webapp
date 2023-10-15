@@ -53,7 +53,7 @@ source "amazon-ebs" "my-ami" {
   subnet_id     = "${var.subnet_id}"
 
   launch_block_device_mappings {
-    delete_on_termination = truez
+    delete_on_termination = true
     device_name           = "/dev/sdb"
     volume_size           = 8
     volume_type           = "gp2"
