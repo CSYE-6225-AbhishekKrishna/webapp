@@ -23,6 +23,6 @@ jobs:
             zip -r webapp.zip .
             ls -al
             
-          working-directory: $GITHUB_WORKSPACE
+        #   working-directory: $GITHUB_WORKSPACE
                
 
