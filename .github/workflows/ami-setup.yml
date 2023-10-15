@@ -18,9 +18,11 @@ jobs:
         - name: Zip Checked-Out Files
         # Create a ZIP archive of the checked-out files
           run: |
-            cd $GITHUB_WORKSPACE
+            cd ..
+            ls -al
             zip -r webapp.zip .
             ls -al
+            
           working-directory: $GITHUB_WORKSPACE
                
 
