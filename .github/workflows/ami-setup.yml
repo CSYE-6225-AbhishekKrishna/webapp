@@ -1,0 +1,15 @@
+name: ami-setup
+
+on: push
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: action/checkout@v3
+        - name: build-webapp
+          run: |
+            ls -al
+            pwd
+            # cd webapp
+

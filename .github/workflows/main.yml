@@ -12,7 +12,7 @@ jobs:
         env:
           POSTGRES_DB: newdb
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: Pa55w0rd
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -63,5 +63,5 @@ jobs:
     - name: Format Packer Template
       run: packer fmt ami.us-east-1.pkr.hcl
 
-    - name: Build Packer Template
-      run: packer build ami.us-east-1.pkr.hcl
+    # - name: Build Packer Template
+    #   run: packer build ami.us-east-1.pkr.hcl
