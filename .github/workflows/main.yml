@@ -55,4 +55,4 @@ jobs:
       uses: hashicorp/setup-packer@main
     
     - name: Validate Packer Template
-      run: packer validate path/to/your/packer/template.pkr.hcl
+      run: packer validate ..\..\packer\ami.us-east-1.pkr.hcl
