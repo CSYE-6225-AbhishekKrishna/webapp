@@ -1,3 +1,4 @@
+# path of the webapp in runner "/home/runner/work/webapp/webapp"
 name: ami-setup
 
 on: push
@@ -13,5 +14,12 @@ jobs:
           run: |
             ls -al
             pwd
-            # cd webapp
+            # cd ..
+        - name: Zip Checked-Out Files
+          run: |
+            # Create a ZIP archive of the checked-out files
+            zip -r webapp.zip $GITHUB_WORKSPACE
+            ls -al
+          working-directory: $GITHUB_WORKSPACE
+               
 
