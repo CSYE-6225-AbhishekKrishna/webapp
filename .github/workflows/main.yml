@@ -36,7 +36,7 @@ jobs:
         DB_HOST: 127.0.0.1
         DB_DATABASE: postgres
         DB_USER: postgres
-        DB_PASSWORD: Pa55w0rd
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_PGPORT: 5432
 
       run: npm test
@@ -62,3 +62,6 @@ jobs:
 
     - name: Format Packer Template
       run: packer fmt ami.us-east-1.pkr.hcl
+
+    - name: Build Packer Template
+      run: packer build ami.us-east-1.pkr.hcl
