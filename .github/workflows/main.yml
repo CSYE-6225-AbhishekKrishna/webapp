@@ -54,5 +54,8 @@ jobs:
     - name: Set up Packer
       uses: hashicorp/setup-packer@main
     
+    - name: Install Packer plugins
+      run: packer init .
+    
     - name: Validate Packer Template
       run: packer validate ami.us-east-1.pkr.hcl
