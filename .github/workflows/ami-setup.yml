@@ -29,8 +29,6 @@ jobs:
         - name: Build Packer Template
           run: packer build ami.us-east-1.pkr.hcl
 
-          
-
         - name: Zip Checked-Out Files
         # Create a ZIP archive of the checked-out files
           run: |
