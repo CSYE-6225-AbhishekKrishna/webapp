@@ -69,16 +69,15 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      "DEBIAN_FRONTENF=noninteractive",
+      "DEBIAN_FRONTEND=noninteractive",
       "CHECKPOINT_DISABLE=1"
     ]
 
+    script = "scripts/build.sh"
+  }
 
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get upgrade -y",
-      "sudo apt-get install nginx -y",
-      "sudo apt-get clean",
-    ]
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
   }
 }
