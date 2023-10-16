@@ -36,6 +36,7 @@ jobs:
           run: |
             ls -al
             pwd
+            npm install
             cd ..
             ls -al
             zip -r webapp.zip .
