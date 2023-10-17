@@ -75,7 +75,8 @@ build {
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
-      "CHECKPOINT_DISABLE=1"
+      "CHECKPOINT_DISABLE=1",
+      "ZIP_FILE=${var.zip_file}"
     ]
 
     script = "scripts/build.sh"
