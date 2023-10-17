@@ -1,47 +1,62 @@
-# path of the webapp in runner "/home/runner/work/webapp/webapp"
 name: ami-setup
 
 on: push
 
 jobs:
-    build:
-      runs-on: ubuntu-latest
+  integration-build:
+    runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: newdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        DB_DIALECT: postgres
+        DB_HOST: 127.0.0.1
+        DB_DATABASE: postgres
+        DB_USER: postgres
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PGPORT: 5432
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
+      run: npm test
 
-        - name: build-webapp
-          run: |
-            ls -al
-            pwd
-            # cd ..
-        - name: Set up Packer
-          uses: hashicorp/setup-packer@main
-        
-        - name: Install Packer plugins
-          run: packer init .
-  
-        - name: Build Packer Template
-          run: packer build ami.us-east-1.pkr.hcl
+  packer-build:
+    runs-on: ubuntu-latest
 
-        - name: Zip Checked-Out Files
-        # Create a ZIP archive of the checked-out files
-          run: |
-            ls -al
-            pwd
-            npm install
-            ls -al
-            cd ..
-            ls -al
-            zip -r webapp.zip .
-            ls -al
-            pwd
-            
-            
-        #  First pwd  above -> /home/runner/work/webapp/webapp
-        # Second pwd  above ->/home/runner/work/webapp
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Packer
+      uses: hashicorp/setup-packer@main
+
+    - name: Install Packer plugins
+      run: packer init .
+
+    - name: Build Packer Template
+      run: packer build ami.us-east-1.pkr.hcl
+
