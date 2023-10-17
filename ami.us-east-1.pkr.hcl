@@ -27,10 +27,10 @@ variable "subnet_id" {
   default = "subnet-0c4fc48372ce54377"
 }
 
-variable "zip_file" {
-  type    = string
-  default = "/home/runner/work/webapp/webapp.zip"
-}
+// variable "zip_file" {
+//   type    = string
+//   default = "/home/runner/work/webapp/webapp.zip"
+// }
 
 
 source "amazon-ebs" "my-ami" {
@@ -76,15 +76,19 @@ build {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
       "CHECKPOINT_DISABLE=1",
-      "ZIP_FILE=${var.zip_file}"
+      // "ZIP_FILE=${var.zip_file}"
     ]
 
     script = "scripts/build.sh"
   }
 
+  // provisioner "file" {
+  //   source      = "${var.zip_file}"
+  //   destination = "/opt/webapp.zip"
+  // }
   provisioner "file" {
-    source      = "${var.zip_file}"
-    destination = "/opt/webapp.zip"
+      source      = "webapp.zip"
+      destination = "/home/admin/webapp.zip"
   }
 
   post-processor "manifest" {
