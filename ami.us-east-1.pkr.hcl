@@ -87,7 +87,7 @@ build {
   //   destination = "/opt/webapp.zip"
   // }
   provisioner "file" {
-      source      = "webapp.zip"
+      source      = "/home/runner/work/webapp/webapp.zip"
       destination = "/home/admin/webapp.zip"
   }
 
