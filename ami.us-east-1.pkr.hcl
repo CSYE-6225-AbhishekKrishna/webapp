@@ -74,6 +74,10 @@ build {
     ]
 
     script = "scripts/build.sh"
+
+    environment_vars = [
+      "ZIP_FILE=${var.zip_file}",  # Pass the ZIP_FILE variable to the shell script
+    ]
   }
 
   post-processor "manifest" {

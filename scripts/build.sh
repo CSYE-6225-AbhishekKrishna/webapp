@@ -81,3 +81,6 @@ fi
 # Print the current working directory
 pwd
 
+
+echo "ZIP_FILE is: $ZIP_FILE"
+
