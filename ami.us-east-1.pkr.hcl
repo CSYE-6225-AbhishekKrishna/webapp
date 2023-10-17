@@ -27,6 +27,11 @@ variable "subnet_id" {
   default = "subnet-0c4fc48372ce54377"
 }
 
+variable "zip_file" {
+  type    = string
+  default = " " # NEED TO CHANGE
+}
+
 
 source "amazon-ebs" "my-ami" {
   region          = "${var.aws_region}"
@@ -74,10 +79,6 @@ build {
     ]
 
     script = "scripts/build.sh"
-
-    environment_vars = [
-      "ZIP_FILE=${var.zip_file}",  # Pass the ZIP_FILE variable to the shell script
-    ]
   }
 
   post-processor "manifest" {

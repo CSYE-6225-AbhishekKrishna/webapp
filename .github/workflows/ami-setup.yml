@@ -82,7 +82,7 @@ jobs:
         run: packer init .
   
       - name: Build Packer Template
-        run: packer build ami.us-east-1.pkr.hcl
+        run: packer build -var "zip_file=${{ env.ZIP_FILE }}" ami.us-east-1.pkr.hcl
 
 
           

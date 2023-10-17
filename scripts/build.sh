@@ -82,5 +82,5 @@ fi
 pwd
 
 
-echo "ZIP_FILE is: $ZIP_FILE"
+echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
 
