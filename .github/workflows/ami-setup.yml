@@ -49,6 +49,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Zip Repository
         run: |
           ls -al
