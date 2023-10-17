@@ -84,7 +84,7 @@ build {
 
   provisioner "file" {
     source      = "${var.zip_file}"
-    destination = "/home/webapp.zip"
+    destination = "/opt/webapp.zip"
   }
 
   post-processor "manifest" {
