@@ -81,8 +81,8 @@ jobs:
       - name: Install Packer plugins
         run: packer init .
   
-      # - name: Build Packer Template
-      #   run: packer build ami.us-east-1.pkr.hcl
+      - name: Build Packer Template
+        run: packer build ami.us-east-1.pkr.hcl
 
 
           
