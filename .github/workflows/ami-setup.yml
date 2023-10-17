@@ -1,9 +1,10 @@
+# path of the webapp in runner "/home/runner/work/webapp/webapp"
 name: ami-setup
 
 on: push
 
 jobs:
-  integration-build:
+  build:
     runs-on: ubuntu-latest
 
     services:
@@ -31,6 +32,7 @@ jobs:
 
     - name: Run Tests
       env:
+        # postgres connection environment variables
         DB_DIALECT: postgres
         DB_HOST: 127.0.0.1
         DB_DATABASE: postgres
@@ -39,7 +41,6 @@ jobs:
         DB_PGPORT: 5432
 
       run: npm test
-
   packer-build:
     runs-on: ubuntu-latest
 
@@ -48,15 +49,43 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Packer
-      uses: hashicorp/setup-packer@main
+      - name: Zip Checked-Out Files
+      # Create a ZIP archive of the checked-out files
+        run: |
+          ls -al
+          pwd
+          npm install
+          ls -al
+          cd ..
+          ls -al
+          zip -r webapp.zip .
+          ls -al
+          pwd 
+          echo "ZIP_FILE=$(pwd)/webapp.zip" >> $GITHUB_ENV
 
-    - name: Install Packer plugins
-      run: packer init .
+      - name: Use environment variable in run
+        run: |
+          echo "My environment variable's value is: ${{ env.ZIP_FILE }}"
 
-    - name: Build Packer Template
-      run: packer build ami.us-east-1.pkr.hcl
+      - name: build-webapp
+        run: |
+          ls -al
+          pwd
+          # cd ..
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@main
 
+      - name: Install Packer plugins
+        run: packer init .
+  
+      # - name: Build Packer Template
+      #   run: packer build ami.us-east-1.pkr.hcl
+
+
+          
+          
+      #  First pwd  above -> /home/runner/work/webapp/webapp
+      # Second pwd  above ->/home/runner/work/webapp
