@@ -29,7 +29,7 @@ variable "subnet_id" {
 
 variable "zip_file" {
   type    = string
-  default = " " # NEED TO CHANGE
+  default = "/home/runner/work/webapp/webapp.zip"
 }
 
 
@@ -80,6 +80,11 @@ build {
     ]
 
     script = "scripts/build.sh"
+  }
+
+  provisioner "file" {
+    source      = "${var.zip_file}"
+    destination = "/home/webapp.zip"
   }
 
   post-processor "manifest" {
