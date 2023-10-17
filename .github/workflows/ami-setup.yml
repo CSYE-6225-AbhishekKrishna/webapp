@@ -51,7 +51,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Zip Repository
         run: |
           ls -al
@@ -69,6 +69,13 @@ jobs:
         with:
           name: webapp
           path: webapp.zip
+
+      - name: Install Packer plugins
+        run: packer init .
+  
+      - name: Build Packer Template
+        run: packer build ami.us-east-1.pkr.hcl
+
 
         
 
