@@ -41,10 +41,10 @@ source "amazon-ebs" "my-ami" {
     "047495291400",
   ]
 
-  aws_polling {
-    delay_seconds = 120
-    max_attempts  = 60
-  }
+  // aws_polling {
+  //   delay_seconds = 120
+  //   max_attempts  = 60
+  // }
 
   instance_type = "t2.micro"
   source_ami    = "${var.source_ami}"
