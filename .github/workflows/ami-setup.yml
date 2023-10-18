@@ -1,0 +1,86 @@
+# path of the webapp in runner "/home/runner/work/webapp/webapp"
+name: ami-setup
+
+on: 
+  push:
+    branches:
+      -main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: newdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      env:
+        # postgres connection environment variables
+        DB_DIALECT: postgres
+        DB_HOST: 127.0.0.1
+        DB_DATABASE: postgres
+        DB_USER: postgres
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PGPORT: 5432
+
+      run: npm test
+  packer-build:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Zip Repository
+        run: |
+          ls -al
+          pwd
+          npm i
+          ls -al
+          zip -r webapp.zip . -x ".git"
+          ls -al
+          pwd
+    
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp
+          path: webapp.zip
+      
+      - name: Print Working Directory
+        run: |
+          ls -al
+          pwd
+
+      - name: Install Packer plugins
+        run: packer init .
+  
+      - name: Build Packer Template
+        run: |
+          ls -al
+          pwd
+          packer build ami.us-east-1.pkr.hcl
