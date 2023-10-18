@@ -51,6 +51,16 @@ jobs:
     - name: Check Out Code
       uses: actions/checkout@v2
 
+    - name: Zip Repository
+      run: |
+        ls -al
+        pwd
+        npm i
+        ls -al
+        zip -r webapp.zip . -x ".git"
+        ls -al
+        pwd
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
