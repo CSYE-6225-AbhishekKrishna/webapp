@@ -58,7 +58,13 @@ pwd
 echo "=============================== List Here ==============================="
 ls -al
 
+# Unzip the webapp.zip file into the 'webapp' folder
 unzip -d webapp webapp.zip
+if [ $? -eq 0 ]; then
+    echo "=============================== Unzipped webapp.zip into 'webapp' folder ==============================="
+else
+    echo "=============================== Failed to unzip webapp.zip ==============================="
+fi
 
 echo "=============================== unzip done ==============================="
 pwd
