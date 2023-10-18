@@ -12,21 +12,12 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "source_ami" {
-  // type    = string
-  // default = "ami-06db4d78cb1d3bbf9" # Debian 12, us-east-1
+// variable "source_ami" {
+//   // type    = string
+//   // default = "ami-06db4d78cb1d3bbf9" # Debian 12, us-east-1
 
-  source_ami_filter {
-    filters = {
-      name                = "debian-12-*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-      architecture        = "x86_64"
-    }
-    most_recent = true
-    owners      = ["aws-marketplace"]
-  }
-}
+
+// }
 
 variable "ssh_username" {
   type    = string
@@ -43,6 +34,17 @@ source "amazon-ebs" "my-ami" {
   ami_name        = "csye6225_f23_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
 
+  source_ami_filter {
+    filters = {
+      name                = "debian-12-*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+      architecture        = "x86_64"
+    }
+    most_recent = true
+    owners      = ["aws-marketplace"]
+  }
+
   ami_regions = [
     "us-east-1",
   ]
@@ -58,7 +60,6 @@ source "amazon-ebs" "my-ami" {
   // }
 
   instance_type = "t2.micro"
-  source_ami    = "${var.source_ami}"
   ssh_username  = "${var.ssh_username}"
   // subnet_id     = "${var.subnet_id}"
 
@@ -84,15 +85,15 @@ build {
   //     // "ZIP_FILE=${var.zip_file}"
   //   ]
 
-    
+
   // }
 
   provisioner "file" {
-      source      = "webapp.zip"
-      destination = "/home/admin/webapp.zip"
+    source      = "webapp.zip"
+    destination = "/home/admin/webapp.zip"
   }
   provisioner "shell" {
-      script = "scripts/build.sh"
+    script = "scripts/build.sh"
   }
 
   post-processor "manifest" {
