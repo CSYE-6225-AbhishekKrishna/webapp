@@ -56,11 +56,9 @@ jobs:
         run: |
           ls -al
           pwd
+          npm i
           ls -al
           zip -r webapp.zip . -x ".git"
-          ls -al
-          pwd
-          cd..
           ls -al
           pwd
     
