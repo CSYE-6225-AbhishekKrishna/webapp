@@ -13,8 +13,19 @@ variable "aws_region" {
 }
 
 variable "source_ami" {
-  type    = string
-  default = "ami-06db4d78cb1d3bbf9" # Debian 12, us-east-1
+  // type    = string
+  // default = "ami-06db4d78cb1d3bbf9" # Debian 12, us-east-1
+
+  source_ami_filter {
+    filters = {
+      name                = "debian-12-*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+      architecture        = "x86_64"
+    }
+    most_recent = true
+    owners      = ["aws-marketplace"]
+  }
 }
 
 variable "ssh_username" {
