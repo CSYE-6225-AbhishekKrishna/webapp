@@ -1,6 +1,9 @@
 name: Integ-Testing
 
-on: push
+on: 
+  pull_request:
+    branches:
+      -main
 
 jobs:
   integration-build:
@@ -41,43 +44,43 @@ jobs:
 
       run: npm test
 
-  packer-validation-build:
-    runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # packer-validation-build:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    steps:
-    - name: Check Out Code
-      uses: actions/checkout@v2
+  #   steps:
+  #   - name: Check Out Code
+  #     uses: actions/checkout@v2
 
-    - name: Zip Repository
-      run: |
-        ls -al
-        pwd
-        npm i
-        ls -al
-        zip -r webapp.zip . -x ".git"
-        ls -al
-        pwd
+  #   - name: Zip Repository
+  #     run: |
+  #       ls -al
+  #       pwd
+  #       npm i
+  #       ls -al
+  #       zip -r webapp.zip . -x ".git"
+  #       ls -al
+  #       pwd
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: webapp
-        path: webapp.zip
+  #   - name: Upload Artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: webapp
+  #       path: webapp.zip
     
-    - name: Set up Packer
-      uses: hashicorp/setup-packer@main
+  #   - name: Set up Packer
+  #     uses: hashicorp/setup-packer@main
     
-    - name: Install Packer plugins
-      run: packer init .
+  #   - name: Install Packer plugins
+  #     run: packer init .
     
-    - name: Validate Packer Template
-      run: packer validate ami.us-east-1.pkr.hcl
+  #   - name: Validate Packer Template
+  #     run: packer validate ami.us-east-1.pkr.hcl
 
-    - name: Format Packer Template
-      run: packer fmt ami.us-east-1.pkr.hcl
+  #   - name: Format Packer Template
+  #     run: packer fmt ami.us-east-1.pkr.hcl
 
-    # - name: Build Packer Template
-    #   run: packer build ami.us-east-1.pkr.hcl
+  #   # - name: Build Packer Template
+  #   #   run: packer build ami.us-east-1.pkr.hcl

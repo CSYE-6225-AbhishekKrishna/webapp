@@ -1,7 +1,10 @@
 # path of the webapp in runner "/home/runner/work/webapp/webapp"
 name: ami-setup
 
-on: push
+on: 
+  push:
+    branches:
+      -main
 
 jobs:
   build:

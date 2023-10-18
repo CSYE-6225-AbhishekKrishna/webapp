@@ -90,5 +90,7 @@ echo "=============================== .env file created and populated ==========
 cat .env
 
 
+sudo apt-get purge -y git
+
 # echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
 
