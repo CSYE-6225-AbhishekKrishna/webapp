@@ -1,7 +1,8 @@
 #!/bin/sh
 
 sleep 30
-ls
+echo "=============================== List Here ==============================="
+ls -al
 
 # Update the package list to ensure we can install packages
 sudo apt-get update
@@ -54,7 +55,18 @@ fi
 
 # Print the current working directory
 pwd
+echo "=============================== List Here ==============================="
+ls -al
+
+unzip webapp.zip
+
+echo "=============================== unzip done ==============================="
+ls -al
+
+cd webapp || exit
+echo "=============================== List Here ==============================="
+ls -al
 
 
-echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
+# echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
 

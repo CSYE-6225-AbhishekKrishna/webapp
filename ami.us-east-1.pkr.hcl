@@ -66,19 +66,22 @@ build {
     "source.amazon-ebs.my-ami",
   ]
 
-  provisioner "shell" {
-    environment_vars = [
-      "DEBIAN_FRONTEND=noninteractive",
-      "CHECKPOINT_DISABLE=1",
-      // "ZIP_FILE=${var.zip_file}"
-    ]
+  // provisioner "shell" {
+  //   environment_vars = [
+  //     "DEBIAN_FRONTEND=noninteractive",
+  //     "CHECKPOINT_DISABLE=1",
+  //     // "ZIP_FILE=${var.zip_file}"
+  //   ]
 
-    script = "scripts/build.sh"
-  }
+    
+  // }
 
   provisioner "file" {
       source      = "webapp.zip"
       destination = "/home/admin/webapp.zip"
+  }
+  provisioner "shell" {
+      script = "scripts/build.sh"
   }
 
   post-processor "manifest" {
