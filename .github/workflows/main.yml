@@ -1,12 +1,66 @@
+# name: Integ-Testing
+
+# on: [pull_request]
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     services:
+#       postgres:
+#         image: postgres:latest
+#         env:
+#           DATABASE: newdb
+#           USER: postgres
+#           PASSWORD: Pa55w0rd
+#         ports:
+#           - 5432:5432
+#         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v2
+#       with:
+#         node-version: '14'
+
+#     - name: Install Dependencies
+#       run: npm install
+
+#     # - name: Wait for PostgreSQL to be ready
+#     #   run: |
+#     #     n=0
+#     #     until [ $n -ge 5 ]
+#     #     do
+#     #       npm run db:migrate:up # Replace with your database migration command
+#     #       [ $? -eq 0 ] && break
+#     #       n=$[$n+1]
+#     #       sleep 15
+#     #     done
+
+#     - name: Run Tests
+#       env:
+#         DIALECT: postgres
+#         HOST: localhost
+#         DATABASE: newdb
+#         USER: postgres
+#         PASSWORD: Pa55w0rd
+#         PGPORT: 5432
+
+#         # DB_HOST: localhost
+#         # DB_PORT: 3306
+#         # DB_USER: postgres
+#         # DB_PASSWORD: password
+#         # DB_NAME: webapp
+#       run: npm test
 name: Integ-Testing
 
-on: 
-  pull_request:
-    branches:
-      -main
+on: [pull_request]
 
 jobs:
-  integration-build:
+  build:
     runs-on: ubuntu-latest
 
     services:
@@ -32,8 +86,20 @@ jobs:
     - name: Install Dependencies
       run: npm install
 
+    # - name: Wait for PostgreSQL to be ready
+    #   run: |
+    #     n=0
+    #     until [ $n -ge 5 ]
+    #     do
+    #       npm run db:migrate:up # Replace with your database migration command
+    #       [ $? -eq 0 ] && break
+    #       n=$[$n+1]
+    #       sleep 15
+    #     done
+
     - name: Run Tests
       env:
+
         # postgres connection environment variables
         DB_DIALECT: postgres
         DB_HOST: 127.0.0.1
@@ -43,44 +109,3 @@ jobs:
         DB_PGPORT: 5432
 
       run: npm test
-
-  # packer-validation-build:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-  #   steps:
-  #   - name: Check Out Code
-  #     uses: actions/checkout@v2
-
-  #   - name: Zip Repository
-  #     run: |
-  #       ls -al
-  #       pwd
-  #       npm i
-  #       ls -al
-  #       zip -r webapp.zip . -x ".git"
-  #       ls -al
-  #       pwd
-
-  #   - name: Upload Artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: webapp
-  #       path: webapp.zip
-    
-  #   - name: Set up Packer
-  #     uses: hashicorp/setup-packer@main
-    
-  #   - name: Install Packer plugins
-  #     run: packer init .
-    
-  #   - name: Validate Packer Template
-  #     run: packer validate ami.us-east-1.pkr.hcl
-
-  #   - name: Format Packer Template
-  #     run: packer fmt ami.us-east-1.pkr.hcl
-
-  #   # - name: Build Packer Template
-  #   #   run: packer build ami.us-east-1.pkr.hcl
