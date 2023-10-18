@@ -58,12 +58,12 @@ pwd
 echo "=============================== List Here ==============================="
 ls -al
 
-unzip webapp.zip
+unzip -d webapp webapp.zip
 
 echo "=============================== unzip done ==============================="
+pwd
 ls -al
 
-cd webapp || exit
 echo "=============================== List Here ==============================="
 ls -al
 
