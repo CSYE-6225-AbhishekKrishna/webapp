@@ -56,9 +56,11 @@ jobs:
         run: |
           ls -al
           pwd
-          cd ..
           ls -al
           zip -r webapp.zip . -x ".git"
+          ls -al
+          pwd
+          cd..
           ls -al
           pwd
     
