@@ -27,12 +27,6 @@ variable "subnet_id" {
   default = "subnet-0c4fc48372ce54377"
 }
 
-// variable "zip_file" {
-//   type    = string
-//   default = "/home/runner/work/webapp/webapp.zip"
-// }
-
-
 source "amazon-ebs" "my-ami" {
   region          = "${var.aws_region}"
   ami_name        = "csye6225_f23_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
@@ -82,10 +76,6 @@ build {
     script = "scripts/build.sh"
   }
 
-  // provisioner "file" {
-  //   source      = "${var.zip_file}"
-  //   destination = "/opt/webapp.zip"
-  // }
   provisioner "file" {
       source      = "webapp.zip"
       destination = "/home/admin/webapp.zip"

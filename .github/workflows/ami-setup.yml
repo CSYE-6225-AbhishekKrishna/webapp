@@ -60,59 +60,23 @@ jobs:
           zip -r webapp.zip . -x ".git"
           ls -al
           pwd
-
-      - name: Print Working Directory
-        run: pwd
     
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: webapp
           path: webapp.zip
+      
+      - name: Print Working Directory
+        run: |
+          ls -al
+          pwd
 
       - name: Install Packer plugins
         run: packer init .
   
       - name: Build Packer Template
-        run: packer build ami.us-east-1.pkr.hcl
-
-
-        
-
-      # - name: Zip Checked-Out Files
-      # # Create a ZIP archive of the checked-out files
-      #   run: |
-      #     ls -al
-      #     pwd
-      #     npm install
-      #     ls -al
-      #     cd ..
-      #     ls -al
-      #     zip -r webapp.zip .
-      #     ls -al
-      #     pwd 
-      #     echo "ZIP_FILE=$(pwd)/webapp.zip" >> $GITHUB_ENV
-
-      # - name: Use environment variable in run
-      #   run: |
-      #     echo "My environment variable's value is: ${{ env.ZIP_FILE }}"
-
-      # - name: build-webapp
-      #   run: |
-      #     ls -al
-      #     pwd
-      #     # cd ..
-      # - name: Set up Packer
-      #   uses: hashicorp/setup-packer@main
-
-      # - name: Install Packer plugins
-      #   run: packer init .
-  
-      # - name: Build Packer Template
-      #   run: packer build -var "zip_file=${{ env.ZIP_FILE }}" ami.us-east-1.pkr.hcl
-
-
-          
-          
-      #  First pwd  above -> /home/runner/work/webapp/webapp
-      # Second pwd  above ->/home/runner/work/webapp
+        run: |
+          ls -al
+          pwd
+          packer build ami.us-east-1.pkr.hcl
