@@ -26,3 +26,5 @@ To get started with the Packer build, follow these steps:
 3. packer build ami.us-east-1.pkr.hcl
 
 4. continue with your pulumi updates
+
+5. update systemd file
