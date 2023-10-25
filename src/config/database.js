@@ -5,7 +5,41 @@ const bcrypt = require('bcrypt');
 
 require("dotenv").config();
 
-const sequelize = new Sequelize({
+// const sequelize = new Sequelize({
+//     dialect: process.env.DB_DIALECT,
+//     host: process.env.DB_HOST,
+//     database: process.env.DB_DATABASE,
+//     username: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     port: process.env.DB_PGPORT,
+//     logging: (query) => {
+//         console.log(query); // Log the query to the console
+//       },
+//     dialectOptions: {
+//         ssl: {
+//             require: true,
+//             rejectUnauthorized: false,
+//         },
+//     }
+// });
+
+const sequelizeOptions = {
+  dialect: process.env.DB_DIALECT,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PGPORT,
+  logging: (query) => {
+      console.log(query); // Log the query to the console
+  },
+};
+let sequelize;
+
+if (process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1') {
+  sequelize = new Sequelize(sequelizeOptions);
+} else {
+  sequelize = new Sequelize({
     dialect: process.env.DB_DIALECT,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
@@ -14,14 +48,15 @@ const sequelize = new Sequelize({
     port: process.env.DB_PGPORT,
     logging: (query) => {
         console.log(query); // Log the query to the console
+    },
+      dialectOptions: {
+          ssl: {
+              require: true,
+              rejectUnauthorized: false,
+          },
       },
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    }
-});
+  });
+}
 
 async function checkDatabaseConnection() {
     let isDatabaseConnected = false;
