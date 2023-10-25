@@ -41,6 +41,13 @@ jobs:
     - name: Validate Packer Template
       run: packer validate ami.us-east-1.pkr.hcl
 
+    - name: Format Packer Configuration
+      run: |
+        if [ -n "$(packer fmt --check ami.us-east-1.pkr.hcl)" ]; then
+          echo "Packer configuration needs formatting. Run 'packer fmt' locally and commit the changes.";
+          exit 1;
+        fi
+
     - name: Format Packer Template
       run: packer fmt ami.us-east-1.pkr.hcl
 
