@@ -87,6 +87,24 @@ echo "=============================== .env file created and populated ==========
 cat .env
 
 
+
+# Systemd
+echo "STARTING SYSTEMD COMMANDS"
+
+# Copy the mywebapp.service file to /etc/systemd/system/
+echo "Copying myapp-systemd.service file to /etc/systemd/system/"
+sudo cp ./systemd/myapp-systemd.service /etc/systemd/system/
+
+# Create group and user
+echo "Creating group and user"
+sudo groupadd csye6225
+sudo useradd -s /bin/false -g csye6225 -d /opt/csye6225 -m csye6225
+
+# Enable and start the service
+echo "STARTING MYWEBAPP"
+sudo systemctl enable myapp-systemd
+sudo systemctl start myapp-systemd
+
 sudo apt-get purge -y git
 
 # echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
