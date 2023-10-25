@@ -76,12 +76,10 @@ echo "=============================== List Here ==============================="
 ls -al
 
 # # Create and populate the .env file
-echo "# -------------FROM PACKER-------------------" > .env
-echo "PORT=3001" >> .env
+echo "PORT=3001" > .env
 echo "DB_DIALECT=postgres" >> .env
 echo "DB_DATABASE=postgres" >> .env
 echo "DB_PGPORT=5432" >> .env
-echo "# -------------FROM PACKER-------------------" >> .env
 
 echo "=============================== .env file created and populated ==============================="
 
