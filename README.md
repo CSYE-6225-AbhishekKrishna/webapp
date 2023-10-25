@@ -1,6 +1,6 @@
 # webapp update 
 
-# Packer Build for Assignment Application
+
 
 ## Overview
 
@@ -27,4 +27,3 @@ To get started with the Packer build, follow these steps:
 
 4. continue with your pulumi updates
 
-5. update systemd file
