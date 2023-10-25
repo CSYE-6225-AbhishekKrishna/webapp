@@ -5,6 +5,7 @@ packer {
       source  = "github.com/hashicorp/amazon"
     }
   }
+}
 
 
 variable "aws_region" {
