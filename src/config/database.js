@@ -9,7 +9,7 @@ require("dotenv").config();
 //     dialect: process.env.DB_DIALECT,
 //     host: process.env.DB_HOST,
 //     database: process.env.DB_DATABASE,
-//     username: process.env.DB_USER,
+//     username: process.env.DB_USERNAME,
 //     password: process.env.DB_PASSWORD,
 //     port: process.env.DB_PGPORT,
 //     logging: (query) => {
@@ -27,7 +27,7 @@ const sequelizeOptions = {
   dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
-  username: process.env.DB_USER,
+  username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PGPORT,
   logging: (query) => {
@@ -43,7 +43,7 @@ if (process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1') 
     dialect: process.env.DB_DIALECT,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
-    username: process.env.DB_USER,
+    username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PGPORT,
     logging: (query) => {
