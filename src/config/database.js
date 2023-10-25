@@ -58,7 +58,7 @@ if (process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1') 
   });
 }
 
-async function checkDatabaseConnection() {
+async function checkDatabaseConnection(req, res) {
     let isDatabaseConnected = false;
     try {
         await sequelize.authenticate();
@@ -66,6 +66,7 @@ async function checkDatabaseConnection() {
     } catch (error) {
         isDatabaseConnected = false;
         console.error('Database connection error:', error);
+        res.status(503).send();
     }
     return isDatabaseConnected;
 }
