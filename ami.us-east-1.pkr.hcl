@@ -7,6 +7,7 @@ packer {
   }
 }
 
+
 variable "aws_region" {
   type    = string
   default = "us-east-1"
@@ -60,7 +61,9 @@ source "amazon-ebs" "my-ami" {
   // }
 
   instance_type = "t2.micro"
+
   ssh_username  = "${var.ssh_username}"
+
   // subnet_id     = "${var.subnet_id}"
 
   launch_block_device_mappings {

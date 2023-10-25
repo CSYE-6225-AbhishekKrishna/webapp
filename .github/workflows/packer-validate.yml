@@ -1,7 +1,6 @@
 name: Integ-Testing
 
 on:
-  # push:
   pull_request:
     branches:
       - main
