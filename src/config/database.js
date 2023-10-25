@@ -14,7 +14,13 @@ const sequelize = new Sequelize({
     port: process.env.DB_PGPORT,
     logging: (query) => {
         console.log(query); // Log the query to the console
-      }
+      },
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+        },
+    }
 });
 
 async function checkDatabaseConnection() {

@@ -31,27 +31,27 @@ else
 fi
 
 # Install 'postgresql' and 'postgresql-contrib' packages
-sudo apt-get install postgresql -y
-if [ $? -eq 0 ]; then
-    echo "=============================== Installed PostgreSQL ==============================="
-else
-    echo "=============================== Failed to install PostgreSQL ==============================="
-fi
+# sudo apt-get install postgresql -y
+# if [ $? -eq 0 ]; then
+#     echo "=============================== Installed PostgreSQL ==============================="
+# else
+#     echo "=============================== Failed to install PostgreSQL ==============================="
+# fi
 
-sudo apt-get install postgresql-contrib -y
-if [ $? -eq 0 ]; then
-    echo "=============================== Installed PostgreSQL Contrib ==============================="
-else
-    echo "=============================== Failed to install PostgreSQL Contrib ==============================="
-fi
+# sudo apt-get install postgresql-contrib -y
+# if [ $? -eq 0 ]; then
+#     echo "=============================== Installed PostgreSQL Contrib ==============================="
+# else
+#     echo "=============================== Failed to install PostgreSQL Contrib ==============================="
+# fi
 
 # Change the password for the 'postgres' user
-sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'Pa55w0rd';"
-if [ $? -eq 0 ]; then
-    echo "=============================== Password for user 'postgres' changed ==============================="
-else
-    echo "=============================== Failed to change password for user 'postgres' ==============================="
-fi
+# sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'Pa55w0rd';"
+# if [ $? -eq 0 ]; then
+#     echo "=============================== Password for user 'postgres' changed ==============================="
+# else
+#     echo "=============================== Failed to change password for user 'postgres' ==============================="
+# fi
 
 # Print the current working directory
 pwd
@@ -75,18 +75,18 @@ cd webapp || exit
 echo "=============================== List Here ==============================="
 ls -al
 
-# Create and populate the .env file
+# # Create and populate the .env file
 echo "PORT=3001" > .env
 echo "DB_DIALECT=postgres" >> .env
-echo "DB_HOST=127.0.0.1" >> .env
+# echo "DB_HOST=127.0.0.1" >> .env
 echo "DB_DATABASE=postgres" >> .env
-echo "DB_USER=postgres" >> .env
-echo "DB_PASSWORD=Pa55w0rd" >> .env
+# echo "DB_USER=postgres" >> .env
+# echo "DB_PASSWORD=Pa55w0rd" >> .env
 echo "DB_PGPORT=5432" >> .env
 
 echo "=============================== .env file created and populated ==============================="
 
-# Print the .env file
+# # Print the .env file
 cat .env
 
 
