@@ -109,3 +109,11 @@ sudo apt-get purge -y git
 
 # echo "IN SHELL SCRIPT ----->  ZIP_FILE is: $ZIP_FILE"
 
+
+sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i -E amazon-cloudwatch-agent.deb
+
+
+sudo mkdir /opt/aws/amazon-cloudwatch-agent
+sudo cp ./cloudwatch/cloudwatch-config.json /opt/aws/amazon-cloudwatch-agent/etc
+sudo chmod 755 /opt/aws/amazon-cloudwatch-agent/etc/cloudwatch-config.json
