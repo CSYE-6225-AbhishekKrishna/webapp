@@ -1,4 +1,5 @@
 const winston = require('winston');
+const path = require("path");
 
 // Create a Winston logger instance
 const logger = winston.createLogger({
@@ -8,9 +9,11 @@ const logger = winston.createLogger({
     winston.format.json() 
   ),
   transports: [
-    new winston.transports.File({ filename: '/home/admin/webapp/logs/info-log-csye6225.log' }), // Log to a file
+    new winston.transports.File({ filename: path.join(__dirname, '../../logs/info-log-csye6225.log') }), // Log to a file
     new winston.transports.Console()
   ],
 });
 
 module.exports = logger;
+
+filename: path.join(__dirname, "../../logs/info.log")

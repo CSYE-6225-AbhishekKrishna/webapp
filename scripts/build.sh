@@ -114,6 +114,6 @@ sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/am
 sudo dpkg -i -E amazon-cloudwatch-agent.deb
 
 
-sudo mkdir /opt/aws/amazon-cloudwatch-agent
-sudo cp ./cloudwatch/cloudwatch-config.json /opt/aws/amazon-cloudwatch-agent/etc
-sudo chmod 755 /opt/aws/amazon-cloudwatch-agent/etc/cloudwatch-config.json
+# sudo mkdir /opt/aws/amazon-cloudwatch-agent
+sudo mv ./cloudwatch/cloudwatch-config.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+# sudo chmod 755 /opt/aws/amazon-cloudwatch-agent/etc/cloudwatch-config.json
