@@ -25,6 +25,9 @@ app.use(bodyParser.json());
 // Mount the assignmentRouter
 app.use('/v1/assignments', assignmentRoute);
 
+app.use('/', (req, res) => {
+    res.status(200).send(); // Sending 'OK' with a 200 status code
+  });
 
 module.exports = app;
 
