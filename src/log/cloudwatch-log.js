@@ -10,7 +10,7 @@ const logger = winston.createLogger({
   ),
   transports: [
     // new winston.transports.File({ filename: path.join(__dirname, '../../logs/info-log-csye6225.log') }), // Log to a file
-    new winston.transports.File({ filename: '/var/logs/info-log-csye6225.log' }),
+    new winston.transports.File({ filename: 'info-log-csye6225.log' }),
     new winston.transports.Console()
   ],
   options: {
