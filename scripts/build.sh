@@ -84,10 +84,10 @@ ls -al
 
 # Create and populate the .env file with sudo
 echo "Creating .env file"
-sudo 'echo "PORT=3001" > .env'
-sudo 'echo "DB_DIALECT=postgres" >> .env'
-sudo 'echo "DB_DATABASE=postgres" >> .env'
-sudo 'echo "DB_PGPORT=5432" >> .env'
+sudo echo "PORT=3001" > .env
+sudo echo "DB_DIALECT=postgres" >> .env
+sudo echo "DB_DATABASE=postgres" >> .env
+sudo echo "DB_PGPORT=5432" >> .env
 echo ".env file created and populated"
 
 
