@@ -1,6 +1,7 @@
 [Unit]
 Description=My webapp Web Application
 ConditionPathExists=/home/admin/webapp/
+After=network.target cloud-init.service
 
 [Service]
 Type=simple
@@ -11,4 +12,6 @@ ExecStart=/usr/bin/node /home/admin/webapp/server.js
 Restart=always
 
 [Install]
-WantedBy=cloud-init.target
+WantedBy=multi-user.target cloud-init.target
+
+

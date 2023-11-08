@@ -15,5 +15,3 @@ const logger = winston.createLogger({
 });
 
 module.exports = logger;
-
-filename: path.join(__dirname, "../../logs/info.log")
