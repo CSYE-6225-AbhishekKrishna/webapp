@@ -47,13 +47,7 @@ fi
 if sudo unzip -d /opt/csye6225/webapp webapp.zip; then
     echo "===============================Unzip successful==============================="
 else
-    echo ""===============================Unzip failed==============================="
-fi
-
-if [ $? -eq 0 ]; then
-    echo "=============================== Unzipped webapp.zip into 'webapp' folder ==============================="
-else
-    echo "=============================== Failed to unzip webapp.zip ==============================="
+    echo "===============================Unzip failed==============================="
 fi
 
 echo "=============================== unzip done ==============================="
