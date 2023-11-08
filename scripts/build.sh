@@ -60,7 +60,7 @@ ls -al
 
 # Unzip the webapp.zip file into the 'webapp' folder
 # unzip -d webapp webapp.zip
-unzip -d /opt/webapp webapp.zip
+sudo unzip -d /opt/webapp webapp.zip
 if [ $? -eq 0 ]; then
     echo "=============================== Unzipped webapp.zip into 'webapp' folder ==============================="
 else
