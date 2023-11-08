@@ -1,14 +1,14 @@
 [Unit]
 Description=My webapp Web Application
-ConditionPathExists=/opt/webapp/
+ConditionPathExists=/opt/csye6225/webapp/
 After=network.target cloud-init.service
 
 [Service]
 Type=simple
 User=csye6225
 Group=csye6225
-WorkingDirectory=/opt/webapp
-ExecStart=/usr/bin/node /opt/webapp/server.js
+WorkingDirectory=/opt/csye6225/webapp
+ExecStart=/usr/bin/node /opt/csye6225/webapp/server.js
 Restart=always
 
 [Install]
