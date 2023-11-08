@@ -30,28 +30,6 @@ else
     echo "=============================== Failed to install NPM ==============================="
 fi
 
-# Install 'postgresql' and 'postgresql-contrib' packages
-# sudo apt-get install postgresql -y
-# if [ $? -eq 0 ]; then
-#     echo "=============================== Installed PostgreSQL ==============================="
-# else
-#     echo "=============================== Failed to install PostgreSQL ==============================="
-# fi
-
-# sudo apt-get install postgresql-contrib -y
-# if [ $? -eq 0 ]; then
-#     echo "=============================== Installed PostgreSQL Contrib ==============================="
-# else
-#     echo "=============================== Failed to install PostgreSQL Contrib ==============================="
-# fi
-
-# Change the password for the 'postgres' user
-# sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'Pa55w0rd';"
-# if [ $? -eq 0 ]; then
-#     echo "=============================== Password for user 'postgres' changed ==============================="
-# else
-#     echo "=============================== Failed to change password for user 'postgres' ==============================="
-# fi
 
 # Print the current working directory
 pwd
@@ -67,9 +45,9 @@ else
 fi
 
 if sudo unzip -d /opt/csye6225/webapp webapp.zip; then
-    echo "Unzip successful"
+    echo "===============================Unzip successful==============================="
 else
-    echo "Unzip failed"
+    echo ""===============================Unzip failed==============================="
 fi
 
 if [ $? -eq 0 ]; then
@@ -120,6 +98,13 @@ sudo cp ./systemd/myapp-systemd.service /etc/systemd/system/
 echo "Creating group and user"
 sudo groupadd csye6225
 sudo useradd -s /bin/false -g csye6225 -d /opt/csye6225 -m csye6225
+
+# Creating file for logging
+sudo touch /var/log/info-log-csye6225.log
+
+# Modefying Permissions
+sudo chown -R csye6225:csye6225 /opt
+sudo chown csye6225:csye6225 /var/log/info-log-csye6225.log
 
 # Enable and start the service
 echo "STARTING MYWEBAPP"
