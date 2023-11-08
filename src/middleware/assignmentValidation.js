@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+const logger = require('../log/cloudwatch-log');
 
 // Middleware for request body validation
 const validateAssignment = [
@@ -20,6 +21,7 @@ const handleValidationErrors = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log("errors in JSON ");
+        logger.error("ERROR: JSON file error (HTTP Status: 400 BAD REQUEST)");
         return res.status(400).send();
     }
     next();

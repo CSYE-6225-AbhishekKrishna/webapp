@@ -111,5 +111,5 @@ sudo dpkg -i -E amazon-cloudwatch-agent.deb
 
 
 # sudo mkdir /opt/aws/amazon-cloudwatch-agent
-sudo mv ./cloudwatch/cloudwatch-config.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+sudo mv ./cloudwatch/amazon-cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
 # sudo chmod 755 /opt/aws/amazon-cloudwatch-agent/etc/cloudwatch-config.json
