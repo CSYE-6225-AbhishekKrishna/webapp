@@ -60,7 +60,18 @@ ls -al
 
 # Unzip the webapp.zip file into the 'webapp' folder
 # unzip -d webapp webapp.zip
-sudo unzip -d /opt/csye6225/webapp webapp.zip
+if sudo mkdir -p /opt/csye6225/webapp; then
+    echo "Directory created successfully"
+else
+    echo "Failed to create directory"
+fi
+
+if sudo unzip -d /opt/csye6225/webapp webapp.zip; then
+    echo "Unzip successful"
+else
+    echo "Unzip failed"
+fi
+
 if [ $? -eq 0 ]; then
     echo "=============================== Unzipped webapp.zip into 'webapp' folder ==============================="
 else
