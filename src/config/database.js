@@ -2,6 +2,8 @@ const { Sequelize, DataTypes } = require('sequelize');
 const fs = require('fs');
 const csv = require('csv-parser');
 const bcrypt = require('bcrypt');
+const logger = require('../log/cloudwatch-log');
+const statsdClient = require("../log/statsd-metric");
 
 require("dotenv").config();
 
@@ -66,6 +68,7 @@ async function checkDatabaseConnection(req, res) {
     } catch (error) {
         isDatabaseConnected = false;
         console.error('Database connection error:', error);
+        logger.error("ERROR: Service is not supported (HTTP Status: 503 SERVICE UNAVAILABLE)");
         res.status(503).send();
     }
     return isDatabaseConnected;

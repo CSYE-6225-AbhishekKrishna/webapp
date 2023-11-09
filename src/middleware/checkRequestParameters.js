@@ -1,3 +1,4 @@
+const logger = require('../log/cloudwatch-log');
 // Middleware to check for request parameters
 function checkRequestParameters(req, res, next) {
     res.setHeader('Cache-Control', 'no-cache');
@@ -12,6 +13,7 @@ function checkRequestParameters(req, res, next) {
 
     // Check if the request query parameters object is not empty
     if (Object.keys(req.query).length > 0) {
+        logger.error("ERROR: Parameter not supported (HTTP Status: 400 BAD REQUEST)");
         return res.status(400).send();
     }
     next();
