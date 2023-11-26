@@ -1,9 +1,17 @@
+const AWS = require('aws-sdk');
+const sns = new AWS.SNS();
+
 const AssignmentService = require('../services/assignmentServices');
 const logger = require('../log/cloudwatch-log');
 const statsdClient = require("../log/statsd-metric");
+const { Assignmentsubmission } = require('../config/database');
+
+const env = require("dotenv").config();
 
 async function getAllAssignments(req, res) {
   statsdClient.increment("getAllAssignments.count");
+  //test
+  microServiceLambda()
   try {
     const assignments = await AssignmentService.getAllAssignments();
     logger.info("INFO: Fetched all assignments (HTTP Status: 200 OK)");
@@ -63,7 +71,7 @@ async function createAssignment(req, res) {
 
   try {
     const { name, points, num_of_attempts, deadline } = req.body;
-
+console.log("deadline ->" + deadline)
     const newAssignment = await AssignmentService.createAssignment({
       name,
       points,
@@ -71,6 +79,8 @@ async function createAssignment(req, res) {
       deadline,
       user,
     });
+    console.log("newAssignment.assignment_created in controller" + newAssignment.assignment_created)
+
     logger.info("INFO: Created assignment (HTTP Status: 201 CREATED)");
     res.status(201).json({
       id: newAssignment.id,
@@ -149,10 +159,109 @@ async function deleteAssignment(req, res) {
   }
 }  
 
+async function submitAssignment(req, res){
+
+  const assignmentId = req.params.id
+  try {
+    console.log("assignmentId---->"+assignmentId)
+    const assignment = await AssignmentService.getAssignmentById(assignmentId);
+    console.log("num_of_attempts---->"+assignment.num_of_attempts);
+    if (!assignment) {
+      return res.status(404).json({ error: 'Assignment not found' });
+    }
+    const currentDate = Date.now();
+    const dueDate = assignment.deadline;
+    console.log("currentDate  ->", new Date(currentDate));
+    console.log("dueDate  ->", new Date(dueDate));
+    
+    if (currentDate > dueDate) {
+      return res.status(400).json({ error: 'Submission deadline has passed' });
+    }
+    
+    // Retrieve all submissions for the given assignment ID
+    const submissions = await Assignmentsubmission.findAll({
+      where: { assignment_id: assignmentId },
+    });
+    console.log("submissions.length---->"+submissions.length)
+
+    if (submissions.length >= assignment.num_of_attempts) {
+      return res.status(400).json({ error: 'Exceeded maximum number of attempts' });
+    }
+
+    const { submission_url } = req.body;
+
+    const newSubmission = await AssignmentService.submitAssignment(assignmentId, submission_url)
+    
+    console.log("URL---------->"+newSubmission.submission_url)
+ 
+
+    const userInfo = {
+      email: 'abhi.krish.1@gmail.com',
+      password : "123456"
+    };
+
+    const message = {
+      assignmentId,
+      submission_url,
+      userInfo,
+    };
+
+    // Publish the message to the SNS topic
+    const params = {
+      Message: JSON.stringify(message),
+      TopicArn: process.env.TOPIC_ARN,
+    };
+
+    sns.publish(params, (err, data) => {
+      if (err) {
+        console.error('Error publishing message to SNS:', err);
+      } else {
+        console.log('Message published successfully:', data);
+      }
+    });
+
+    console.log('Message published to SNS:', publishResponse);
+
+    res.status(201).json({
+      id: newSubmission.id,
+      assignment_id:newSubmission.assignment_id,
+      submission_url:newSubmission.submission_url, 
+      submission_date:newSubmission.submission_date,
+      submission_updated:newSubmission.submission_updated,
+    });
+  }
+  catch (error) {
+  console.error('Error submitting assignment:', error);
+  }
+  res.status(400).send();
+}
+//test
+function microServiceLambda()
+{
+  const params = {
+    TopicArn: process.env.TOPIC_ARN,
+  };
+  sns.subscribe(params, (err, data) => {
+    if (err) {
+      console.error('Error subscribing to SNS topic:', err);
+    } else {
+      console.log('Subscribed successfully:', data);
+    }
+  });
+
+  // Set up a handler to process incoming messages
+  sns.on('message', (message) => {
+    console.log('Received message:', message);
+    // Process the message data as needed
+  });
+  
+}
+
 module.exports = {
   getAllAssignments,
   getAssignmentById,
   createAssignment,
   updateAssignment,
   deleteAssignment,
+  submitAssignment
 };

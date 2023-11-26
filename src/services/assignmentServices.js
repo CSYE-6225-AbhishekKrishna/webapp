@@ -1,4 +1,4 @@
-const { Assignment } = require('../config/database'); // Import your Assignment model here
+const { Assignment, Assignmentsubmission } = require('../config/database'); // Import your Assignment model here
 
 async function getAllAssignments() {
   const attributesToInclude = [
@@ -19,7 +19,7 @@ async function getAllAssignments() {
 }
 
 async function getAssignmentById(assignmentId) {
-
+console.log("In - getAssignmentById");
     const assignment = await Assignment.findOne({
       where: {
         id: assignmentId,
@@ -32,7 +32,7 @@ async function getAssignmentById(assignmentId) {
 async function createAssignment({ name, points, num_of_attempts, deadline, user }) {
   const createdTimeDate = new Date();
   const updatedTimeDate = new Date();
-
+  console.log("createdTimeDate in service :"+createdTimeDate)
   const newAssignment = await Assignment.create({
     name,
     points,
@@ -42,7 +42,6 @@ async function createAssignment({ name, points, num_of_attempts, deadline, user 
     assignment_updated: updatedTimeDate,
     user_id: user.id,
   });
-
   return newAssignment;
 }
 
@@ -54,10 +53,25 @@ async function deleteAssignment(assignment) {
   await assignment.destroy();
 }
 
+async function submitAssignment(assignment_id, submission_url) {
+  const submission_date = new Date();
+  const submission_updated = new Date();
+  const newSubmission = await Assignmentsubmission.create({
+    assignment_id,
+    submission_url,
+    submission_date,
+    submission_updated
+  })
+
+  console.log("URL---------->"+newSubmission.submission_url)
+  return newSubmission;
+}
+
 module.exports = {
   getAllAssignments,
   getAssignmentById,
   createAssignment,
   updateAssignment,
   deleteAssignment,
+  submitAssignment
 };
