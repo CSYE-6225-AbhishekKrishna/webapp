@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const logger = require('../log/cloudwatch-log');
 const statsdClient = require("../log/statsd-metric");
 
-require("dotenv").config();
-
+const env = require("dotenv").config();
+console.log(env);
 // const sequelize = new Sequelize({
 //     dialect: process.env.DB_DIALECT,
 //     host: process.env.DB_HOST,
@@ -24,6 +24,12 @@ require("dotenv").config();
 //         },
 //     }
 // });
+console.log("DB_DIALECT :"+ process.env.DB_DIALECT);
+console.log("DB_HOST :"+ process.env.DB_HOST);
+console.log("DB_DATABASE :"+ process.env.DB_DATABASE);
+console.log("DB_USERNAME :"+ process.env.DB_USERNAME);
+console.log("DB_PASSWORD :"+ process.env.DB_PASSWORD);
+console.log("DB_PGPORT :"+ process.env.DB_PGPORT);
 
 const sequelizeOptions = {
   dialect: process.env.DB_DIALECT,
@@ -75,7 +81,8 @@ async function checkDatabaseConnection(req, res) {
 }
 const Account = require('../models/userModel')(sequelize);
 const Assignment = require('../models/assignmentModel')(sequelize);
-  
+const Assignmentsubmission = require('../models/assignmentSubmitModel')(sequelize);
+
   var createdTimeDate = new Date().toISOString();
   var updatedTimeDate = new Date().toISOString();
 
@@ -165,4 +172,5 @@ module.exports = {
     sequelize,
     checkDatabaseConnection, 
     synchronizeDatabase,
+    Assignmentsubmission,
 };

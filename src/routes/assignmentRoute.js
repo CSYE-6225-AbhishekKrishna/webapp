@@ -17,6 +17,9 @@ router.get('/:id', assignmentController.getAssignmentById);
 router.post('/', validateAssignment, handleValidationErrors, assignmentController.createAssignment);
 router.put('/:id', checkIdParam, validateAssignment, handleValidationErrors, assignmentController.updateAssignment);
 router.delete('/:id', checkIdParam, assignmentController.deleteAssignment);
+
+router.post('/:id/submission',assignmentController.submitAssignment);
+
 // Handling 400 Bad Request
 router.delete('/', async (req, res) => {
     logger.error("ERROR: Delete request need ID (HTTP Status: 400 BAD REQUEST)");
