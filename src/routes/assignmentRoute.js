@@ -18,7 +18,7 @@ router.post('/', validateAssignment, handleValidationErrors, assignmentControlle
 router.put('/:id', checkIdParam, validateAssignment, handleValidationErrors, assignmentController.updateAssignment);
 router.delete('/:id', checkIdParam, assignmentController.deleteAssignment);
 
-router.post('/:id/submission',assignmentController.submitAssignment);
+router.post('/:id/submission',checkIdParam, assignmentController.submitAssignment);
 
 // Handling 400 Bad Request
 router.delete('/', async (req, res) => {
