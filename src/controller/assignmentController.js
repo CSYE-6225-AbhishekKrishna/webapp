@@ -1,6 +1,11 @@
 const AWS = require('aws-sdk');
 const sns = new AWS.SNS();
-
+AWS.config.update({
+  accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
+  secretAccessKey: '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',
+  region: 'us-east-1'
+});
+console.log('AWS Config:', AWS.config);
 const AssignmentService = require('../services/assignmentServices');
 const logger = require('../log/cloudwatch-log');
 const statsdClient = require("../log/statsd-metric");
@@ -196,7 +201,7 @@ async function submitAssignment(req, res){
  
 
     const userInfo = {
-      email: 'abhi.krish.1@gmail.com',
+      email: 'asdf .1@gmail.com',
       password : "123456"
     };
 
@@ -209,6 +214,7 @@ async function submitAssignment(req, res){
     // Publish the message to the SNS topic
     const params = {
       Message: JSON.stringify(message),
+      // TopicArn: 'arn:aws:sns:us-east-1:635735244533:test.fifo'
       TopicArn: process.env.TOPIC_ARN,
     };
 
@@ -219,8 +225,6 @@ async function submitAssignment(req, res){
         console.log('Message published successfully:', data);
       }
     });
-
-    console.log('Message published to SNS:', publishResponse);
 
     res.status(201).json({
       id: newSubmission.id,
@@ -239,6 +243,7 @@ async function submitAssignment(req, res){
 function microServiceLambda()
 {
   const params = {
+    // TopicArn: 'arn:aws:sns:us-east-1:635735244533:test.fifo'
     TopicArn: process.env.TOPIC_ARN,
   };
   sns.subscribe(params, (err, data) => {
