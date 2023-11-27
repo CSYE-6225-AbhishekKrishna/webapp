@@ -1,22 +1,25 @@
 const AWS = require('aws-sdk');
 const sns = new AWS.SNS();
+
+
+const AssignmentService = require('../services/assignmentServices');
+const logger = require('../log/cloudwatch-log');
+const statsdClient = require("../log/statsd-metric");
+const { Assignmentsubmission } = require('../config/database');
+// Configure the AWS region
+    AWS.config.update({ region: 'us-east-1' });
+
 AWS.config.update({
   accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
   secretAccessKey: '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',
   region: 'us-east-1'
 });
 console.log('AWS Config:', AWS.config);
-const AssignmentService = require('../services/assignmentServices');
-const logger = require('../log/cloudwatch-log');
-const statsdClient = require("../log/statsd-metric");
-const { Assignmentsubmission } = require('../config/database');
 
 const env = require("dotenv").config();
 
 async function getAllAssignments(req, res) {
   statsdClient.increment("getAllAssignments.count");
-  //test
-  microServiceLambda()
   try {
     const assignments = await AssignmentService.getAllAssignments();
     logger.info("INFO: Fetched all assignments (HTTP Status: 200 OK)");
@@ -218,10 +221,14 @@ async function submitAssignment(req, res){
       TopicArn: process.env.TOPIC_ARN,
     };
 
+   
+
     sns.publish(params, (err, data) => {
       if (err) {
+        logger.info(err)
         console.error('Error publishing message to SNS:', err);
       } else {
+        logger.info(data)
         console.log('Message published successfully:', data);
       }
     });
@@ -235,31 +242,10 @@ async function submitAssignment(req, res){
     });
   }
   catch (error) {
+    logger.info(error)
   console.error('Error submitting assignment:', error);
   }
   res.status(400).send();
-}
-//test
-function microServiceLambda()
-{
-  const params = {
-    // TopicArn: 'arn:aws:sns:us-east-1:635735244533:test.fifo'
-    TopicArn: process.env.TOPIC_ARN,
-  };
-  sns.subscribe(params, (err, data) => {
-    if (err) {
-      console.error('Error subscribing to SNS topic:', err);
-    } else {
-      console.log('Subscribed successfully:', data);
-    }
-  });
-
-  // Set up a handler to process incoming messages
-  sns.on('message', (message) => {
-    console.log('Received message:', message);
-    // Process the message data as needed
-  });
-  
 }
 
 module.exports = {
