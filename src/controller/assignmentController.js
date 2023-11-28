@@ -1,20 +1,20 @@
-const AWS = require('aws-sdk');
-const sns = new AWS.SNS();
-
-
 const AssignmentService = require('../services/assignmentServices');
 const logger = require('../log/cloudwatch-log');
 const statsdClient = require("../log/statsd-metric");
 const { Assignmentsubmission } = require('../config/database');
+
+const AWS = require('aws-sdk');
 // Configure the AWS region
-    AWS.config.update({ region: 'us-east-1' });
+AWS.config.update({ region: 'us-east-1' });
 
 AWS.config.update({
   accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
   secretAccessKey: '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',
   region: 'us-east-1'
 });
-console.log('AWS Config:', AWS.config);
+const sns = new AWS.SNS();
+
+// console.log('AWS Config:', AWS.config);
 
 const env = require("dotenv").config();
 
@@ -204,7 +204,7 @@ async function submitAssignment(req, res){
  
 
     const userInfo = {
-      email: 'asdf .1@gmail.com',
+      email: 'abhi.krish.1@gmail.com',
       password : "123456"
     };
 
@@ -217,11 +217,8 @@ async function submitAssignment(req, res){
     // Publish the message to the SNS topic
     const params = {
       Message: JSON.stringify(message),
-      // TopicArn: 'arn:aws:sns:us-east-1:635735244533:test.fifo'
       TopicArn: process.env.TOPIC_ARN,
     };
-
-   
 
     sns.publish(params, (err, data) => {
       if (err) {
