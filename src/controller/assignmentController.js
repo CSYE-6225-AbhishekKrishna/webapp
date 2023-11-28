@@ -205,30 +205,41 @@ async function submitAssignment(req, res){
 
     const userInfo = {
       email: 'abhi.krish.1@gmail.com',
-      password : "123456"
     };
 
-    const message = {
-      assignmentId,
-      submission_url,
-      userInfo,
-    };
-
-    // Publish the message to the SNS topic
-    const params = {
-      Message: JSON.stringify(message),
+    // const message = {
+    //   assignmentId,
+    //   submission_url,
+    //   userInfo,
+    // };
+    // // Publish to SNS after successful submission
+    const sns = new AWS.SNS();
+    const snsMessage = {
+      Message: JSON.stringify({
+        userEmail: 'abhi.krish.1@gmail.com',
+        githubRepo: submission_url,
+        releaseTag: "webapp-v1",
+      }),
       TopicArn: process.env.TOPIC_ARN,
     };
 
-    sns.publish(params, (err, data) => {
-      if (err) {
-        logger.info(err)
-        console.error('Error publishing message to SNS:', err);
-      } else {
-        logger.info(data)
-        console.log('Message published successfully:', data);
-      }
-    });
+    await sns.publish(snsMessage).promise();
+
+    // Publish the message to the SNS topic
+    // const params = {
+    //   Message: JSON.stringify(snsMessage),
+    //   TopicArn: process.env.TOPIC_ARN,
+    // };
+
+    // sns.publish(params, (err, data) => {
+    //   if (err) {
+    //     logger.info(err)
+    //     console.error('Error publishing message to SNS:', err);
+    //   } else {
+    //     logger.info(data)
+    //     console.log('Message published successfully:', data);
+    //   }
+    // });
 
     res.status(201).json({
       id: newSubmission.id,
