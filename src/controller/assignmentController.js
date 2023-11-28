@@ -7,11 +7,11 @@ const AWS = require('aws-sdk');
 // Configure the AWS region
 AWS.config.update({ region: 'us-east-1' });
 
-AWS.config.update({
-  accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
-  secretAccessKey: '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',
-  region: 'us-east-1'
-});
+// AWS.config.update({
+//   accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
+//   secretAccessKey: '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',
+//   region: 'us-east-1'
+// });
 const sns = new AWS.SNS();
 
 // console.log('AWS Config:', AWS.config);
