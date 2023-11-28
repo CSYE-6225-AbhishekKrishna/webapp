@@ -171,6 +171,14 @@ async function submitAssignment(req, res){
 
   const assignmentId = req.params.id
   try {
+    const authheader = req.headers.authorization;
+    const auth = new Buffer.from(authheader.split(' ')[1],
+    'base64').toString().split(':');
+    const email = auth[0];
+    const password = auth[1];
+    console.log("email --->"+email);
+    console.log("password --->"+password);
+
     console.log("assignmentId---->"+assignmentId)
     const assignment = await AssignmentService.getAssignmentById(assignmentId);
     console.log("num_of_attempts---->"+assignment.num_of_attempts);
@@ -202,21 +210,11 @@ async function submitAssignment(req, res){
     
     console.log("URL---------->"+newSubmission.submission_url)
  
-
-    const userInfo = {
-      email: 'abhi.krish.1@gmail.com',
-    };
-
-    // const message = {
-    //   assignmentId,
-    //   submission_url,
-    //   userInfo,
-    // };
     // // Publish to SNS after successful submission
     const sns = new AWS.SNS();
     const snsMessage = {
       Message: JSON.stringify({
-        userEmail: 'abhi.krish.1@gmail.com',
+        userEmail: email,
         githubRepo: submission_url,
         releaseTag: "webapp-v1",
       }),
