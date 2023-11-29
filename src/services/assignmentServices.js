@@ -53,14 +53,15 @@ async function deleteAssignment(assignment) {
   await assignment.destroy();
 }
 
-async function submitAssignment(assignment_id, submission_url) {
+async function submitAssignment(assignment_id, submission_url, user) {
   const submission_date = new Date();
   const submission_updated = new Date();
   const newSubmission = await Assignmentsubmission.create({
     assignment_id,
     submission_url,
     submission_date,
-    submission_updated
+    submission_updated,
+    user_id: user.id,
   })
 
   console.log("URL---------->"+newSubmission.submission_url)

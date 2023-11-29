@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
     submission_updated: {
         type: DataTypes.DATE
       },
+      user_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },  {
       tableName: 'AssignmentSubmission',
       timestamps: false,
