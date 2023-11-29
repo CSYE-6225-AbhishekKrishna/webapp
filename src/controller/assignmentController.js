@@ -8,10 +8,6 @@ const AWS = require('aws-sdk');
 // Configure the AWS region
 AWS.config.update({ region: 'us-east-1' });
 
-const sns = new AWS.SNS();
-
-// console.log('AWS Config:', AWS.config);
-
 const env = require("dotenv").config();
 
 async function getAllAssignments(req, res) {
