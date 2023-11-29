@@ -4,14 +4,10 @@ const statsdClient = require("../log/statsd-metric");
 const { Assignmentsubmission } = require('../config/database');
 
 const AWS = require('aws-sdk');
+
 // Configure the AWS region
 AWS.config.update({ region: 'us-east-1' });
 
-// AWS.config.update({
-//   accessKeyId: 'AKIAZIBGF732UQ3EDMPB',
-//   secretAccessKey: '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',
-//   region: 'us-east-1'
-// });
 const sns = new AWS.SNS();
 
 // console.log('AWS Config:', AWS.config);
@@ -145,6 +141,7 @@ async function deleteAssignment(req, res) {
   const user_Id = req.user.id;
 
   try {
+
     const assignment = await AssignmentService.getAssignmentById(assignmentId);
 
     if (!assignment) {
@@ -155,6 +152,16 @@ async function deleteAssignment(req, res) {
     if (assignment.user_id !== user_Id) {
       logger.error("ERROR: User Forbidden access (HTTP Status: 403 FORBIDDEN)");
       return res.status(403).send();
+    }
+
+    // Retrieve all submissions for the given assignment ID
+    const submissions = await Assignmentsubmission.findAll({
+      where: { assignment_id: assignmentId },
+    });
+
+    if (submissions.length > 0) {
+      logger.info(`ERROR: Cant delete ${submissions.length} Submissions present for Assignment ID ${assignmentId} (HTTP Status: 400 BAD REQUEST)`);
+      return res.status(400).json({ error: `Cant delete ${submissions.length} Submissions present for Assignment ID ${assignmentId}` });
     }
 
     await AssignmentService.deleteAssignment(assignment);
@@ -169,6 +176,9 @@ async function deleteAssignment(req, res) {
 
 async function submitAssignment(req, res){
 
+  const user = req.user;
+  console.log("userEmail : "+user.email);
+  console.log("userID : "+user.id);
   const assignmentId = req.params.id
   try {
     const authheader = req.headers.authorization;
@@ -176,27 +186,27 @@ async function submitAssignment(req, res){
     'base64').toString().split(':');
     const email = auth[0];
     const password = auth[1];
-    console.log("email --->"+email);
-    console.log("password --->"+password);
+    logger.info("Submission User's Email : "+email);
 
-    console.log("assignmentId---->"+assignmentId)
+    console.log("Assignment ID : "+assignmentId)
     const assignment = await AssignmentService.getAssignmentById(assignmentId);
-    console.log("num_of_attempts---->"+assignment.num_of_attempts);
+    console.log("Number of attempts for "+assignment.name+" is "+assignment.num_of_attempts);
+
     if (!assignment) {
+      logger.error("ERROR: Assignment not found: (HTTP Status: 404 NOT FOUND)");
       return res.status(404).json({ error: 'Assignment not found' });
     }
     const currentDate = Date.now();
     const dueDate = assignment.deadline;
-    console.log("currentDate  ->", new Date(currentDate));
-    console.log("dueDate  ->", new Date(dueDate));
     
     if (currentDate > dueDate) {
+      logger.error("ERROR: Submission deadline has passed (HTTP Status: 400 BAD REQUEST)");
       return res.status(400).json({ error: 'Submission deadline has passed' });
     }
     
     // Retrieve all submissions for the given assignment ID
     const submissions = await Assignmentsubmission.findAll({
-      where: { assignment_id: assignmentId },
+      where: { user_id: user.id, assignment_id: assignmentId },
     });
     console.log("submissions.length---->"+submissions.length)
 
@@ -206,7 +216,7 @@ async function submitAssignment(req, res){
 
     const { submission_url } = req.body;
 
-    const newSubmission = await AssignmentService.submitAssignment(assignmentId, submission_url)
+    const newSubmission = await AssignmentService.submitAssignment(assignmentId, submission_url, user)
     
     console.log("URL---------->"+newSubmission.submission_url)
  
@@ -222,22 +232,6 @@ async function submitAssignment(req, res){
     };
 
     await sns.publish(snsMessage).promise();
-
-    // Publish the message to the SNS topic
-    // const params = {
-    //   Message: JSON.stringify(snsMessage),
-    //   TopicArn: process.env.TOPIC_ARN,
-    // };
-
-    // sns.publish(params, (err, data) => {
-    //   if (err) {
-    //     logger.info(err)
-    //     console.error('Error publishing message to SNS:', err);
-    //   } else {
-    //     logger.info(data)
-    //     console.log('Message published successfully:', data);
-    //   }
-    // });
 
     res.status(201).json({
       id: newSubmission.id,
