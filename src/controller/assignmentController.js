@@ -27,7 +27,7 @@ async function getAssignmentById(req, res) {
  
     statsdClient.increment("getAssignmentById.count");
     const assignmentId = req.params.id;
-  
+    
     if (!assignmentId) {
       console.log('ERROR: Invalid or missing Assignment ID in the request.');
       logger.error("ERROR: Invalid or missing Assignment ID in the request.(HTTP Status: 400 BAD REQUEST)");
@@ -38,6 +38,13 @@ async function getAssignmentById(req, res) {
   
     try {
       const assignment = await AssignmentService.getAssignmentById(assignmentId);
+
+      if (!assignment) {
+        console.log("assignmentId is NULL")
+        logger.error("ERROR: Assignment not found (HTTP Status: 404 NOT FOUND)");
+        return res.status(404).send('Assignment not found');
+      }
+
       const responseObj =  {
         id : assignment.id,
         name : assignment.name,
@@ -60,7 +67,7 @@ async function getAssignmentById(req, res) {
     } catch (error) {
       console.log("in get('/:id' function");
       console.error('Error fetching assignment:', error);
-      logger.error(`ERROR: Error Fetching assignment with with ID: ${assignmentId} (HTTP Status: 200 OK)`);
+      logger.error(`ERROR: Error Fetching assignment with with ID: ${assignmentId} (HTTP Status: 400 OK)`);
       res.status(400).send();
     }
   }
@@ -189,7 +196,7 @@ async function submitAssignment(req, res){
     console.log("Number of attempts for "+assignment.name+" is "+assignment.num_of_attempts);
 
     if (!assignment) {
-      logger.error("ERROR: Assignment not found: (HTTP Status: 404 NOT FOUND)");
+      logger.error("ERROR: Assignment not found (HTTP Status: 404 NOT FOUND)");
       return res.status(404).json({ error: 'Assignment not found' });
     }
     const currentDate = Date.now();

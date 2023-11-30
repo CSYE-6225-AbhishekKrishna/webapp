@@ -9,8 +9,8 @@ const checkIdParam = (req, res, next) => {
         console.log('IN checkIdParam() : ERROR: Invalid or missing Assignment ID in the request.');
 
         // Respond with a 400 Bad Request and an error message
-        clogger.error("ERROR: AssignmentId incorrect(UUID format wrong) (HTTP Status: 400 BAD REQUEST)");
-        return res.status(400).send();
+        logger.error("ERROR: AssignmentId Not found : incorrect(UUID format wrong) (HTTP Status: 404 NOT FOUND)");
+        return res.status(404).send();
     }
 
     // If the 'id' parameter is valid, continue to the next middleware or route handler
