@@ -25,9 +25,20 @@ app.use(bodyParser.json());
 // Mount the assignmentRouter
 app.use('/v1/assignments', assignmentRoute);
 
-app.use('/', (req, res) => {
+app.use('/', (req, res, next) => {
+  if(req.path === '/')
+  {
     res.status(200).send(); // Sending 'OK' with a 200 status code
-  });
+  }
+  else{
+    next();
+  }
+});
+
+app.use('/*',(req, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.status(404).end();
+});
 
 module.exports = app;
 
