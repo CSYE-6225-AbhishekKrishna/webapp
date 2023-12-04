@@ -87,7 +87,7 @@ jobs:
   deploy:
     name: deploy AMI
     runs-on: ubuntu-latest
-    needs: build 
+    needs: packer-build 
         
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
