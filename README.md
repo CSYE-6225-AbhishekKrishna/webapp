@@ -27,3 +27,11 @@ To get started with the Packer build, follow these steps:
 
 4. continue with your pulumi updates
 
+
+## Commands to import the Certificate
+
+1. openssl genrsa -out demoabhishekkrishnacloud.key 2048
+
+2. openssl req -new -key demoabhishekkrishnacloud.key -out demoabhishekkrishnacloud.csr
+
+3. aws acm import-certificate --certificate fileb://C:/Users/abhik/demo_abhishekkrishna.cloud/demo_abhishekkrishna_cloud.crt --private-key fileb://C:/Users/abhik/   demo_abhishekkrishna.cloud/privatekey.pem --certificate-chain fileb://C:/Users/abhik/demo_abhishekkrishna.cloud/demo_abhishekkrishna_cloud.ca-bundle
