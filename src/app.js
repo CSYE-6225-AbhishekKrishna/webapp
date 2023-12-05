@@ -23,7 +23,7 @@ app.use('/authenticate', authenticateRouter);
 
 app.use(bodyParser.json());
 // Mount the assignmentRouter
-app.use('/v1/assignments', assignmentRoute);
+app.use('/v3/assignments', assignmentRoute);
 
 app.use('/', (req, res, next) => {
   if(req.path === '/')
