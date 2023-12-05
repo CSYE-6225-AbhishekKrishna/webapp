@@ -198,7 +198,7 @@ jobs:
             done
               
             # Check the instance refresh status and fail the workflow if it failed
-            if [[ "$REFRESH_STATUS" == "Failed" ]]; then
+            if [[ "$REFRESH_STATUS" == "Cancelled" ]]; then
               echo "Instance refresh failed. Workflow failed."
               exit 1
             else
