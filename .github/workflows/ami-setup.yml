@@ -188,26 +188,9 @@ jobs:
         
         - name: Wait for Auto Scaling Group Instance Refresh Completion
           run: |
-            # ASG_NAME="${{ steps.get_asg_and_lt.outputs.asg_name }}"
-            # REFRESH_STATUS=""
-            # while [[ "$REFRESH_STATUS" != "Successful" && "$REFRESH_STATUS" != "Failed" ]]; do
-            #   REFRESH_STATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name $ASG_NAME --query 'InstanceRefreshes[0].Status' --output text)
-    
-            #   echo "Instance Refresh Status: $REFRESH_STATUS"
-            #   sleep 15
-            # done
-              
-            # # Check the instance refresh status and fail the workflow if it failed
-            # if [[ "$REFRESH_STATUS" == "Cancelled" ]]; then
-            #   echo "Instance refresh failed. Workflow failed."
-            #   exit 1
-            # else
-            #   echo "Instance refresh completed successfully."
-            # fi
-            # run: |
-
-
-
+            ASG_NAME="${{ steps.get_asg_and_lt.outputs.asg_name }}"
+            REFRESH_STATUS=""
+            
             while true; do
             REFRESH_STATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name $ASG_NAME --query 'InstanceRefreshes[0].Status' --output text)
               sleep 10
@@ -219,3 +202,4 @@ jobs:
                 exit 1
               fi
             done
+
